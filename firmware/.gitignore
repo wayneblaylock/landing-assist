@@ -1,0 +1,3 @@
+activate_idf.sh
+activate_idf.cmd
+build
