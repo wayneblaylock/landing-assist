@@ -1,10 +1,9 @@
 # Display
 
-Pilot horizon GUI for the landing-assist system. It draws the artificial horizon, actual pitch (yellow cue), suggested pitch (magenta bar), a logarithmic height tape, and battery. A Dev panel stands in for sensor values until the ESP32 is feeding live data. When Model T is not usable the instrument blanks and shows "Don't Trust Sensors".
+Static pilot horizon (ADI) page for the landing-assist system.
 
-```bash
-npm install
-npm run dev
-```
+This is a single self-contained HTML file (`index.html`). It is the page the ESP32 serves over its SoftAP so the cockpit phone can open it.
 
-The dev server listens on port 8080.
+The previous React/TanStack app was removed; it was heavier than needed for a local ESP32-hosted instrument.
+
+To preview locally, open `index.html` in a browser. The Dev panel lets you move the cues until the ESP32 is feeding live data.
