@@ -4,6 +4,7 @@
 #include "nvs_flash.h"
 
 #include "softap.h"
+#include "webserver.h"
 
 static const char *TAG = "main";
 
@@ -17,12 +18,15 @@ void app_main(void)
     }
     ESP_ERROR_CHECK(err);
 
-    //starts the Access Point
+    // Start the SoftAP
     softap_start();
+
+    // Start the HTTP server that serves the ADI
+    webserver_start();
 
     uint32_t tick = 0;
     while (1) {
         ESP_LOGI(TAG, "tick %lu", (unsigned long)tick++);
-        vTaskDelay(pdMS_TO_TICKS(1000));//delay main task loop by 1s
+        vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
