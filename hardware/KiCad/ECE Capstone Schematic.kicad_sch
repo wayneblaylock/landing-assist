@@ -30,7 +30,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "Sheetfile" "lidar.kicad_sc.kicad_sch"
+		(property "Sheetfile" "lidar.kicad_sch"
 			(at 97.79 84.4046 0)
 			(effects
 				(font
@@ -156,7 +156,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "Sheetfile" "airspeed.kicad_sch .kicad_sch"
+		(property "Sheetfile" "airspeed.kicad_sch"
 			(at 97.79 62.8146 0)
 			(effects
 				(font

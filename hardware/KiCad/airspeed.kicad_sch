@@ -1074,7 +1074,7 @@
 			(uuid "0c21cceb-4269-46f0-b486-719f06e9013b")
 		)
 		(instances
-			(project "ECE Capstone"
+			(project "ECE Capstone Schematic"
 				(path "/f5466e30-9697-4c42-96e2-a6468d9cb39f/f1895d82-ed62-4765-9482-f80f4fb1d323"
 					(reference "#PWR027")
 					(unit 1)
@@ -1144,7 +1144,7 @@
 			(uuid "5a2499b1-cc10-4ae6-a5b9-ebb87e75826b")
 		)
 		(instances
-			(project ""
+			(project "ECE Capstone Schematic"
 				(path "/f5466e30-9697-4c42-96e2-a6468d9cb39f/f1895d82-ed62-4765-9482-f80f4fb1d323"
 					(reference "R3")
 					(unit 1)
@@ -1322,7 +1322,7 @@
 			(uuid "702c6b25-4ba3-4a19-b86b-8a295f32f1ab")
 		)
 		(instances
-			(project ""
+			(project "ECE Capstone Schematic"
 				(path "/f5466e30-9697-4c42-96e2-a6468d9cb39f/f1895d82-ed62-4765-9482-f80f4fb1d323"
 					(reference "U1")
 					(unit 1)
@@ -1392,7 +1392,7 @@
 			(uuid "7a9d8493-1994-4241-8b97-918fa4d2ed18")
 		)
 		(instances
-			(project "ECE Capstone"
+			(project "ECE Capstone Schematic"
 				(path "/f5466e30-9697-4c42-96e2-a6468d9cb39f/f1895d82-ed62-4765-9482-f80f4fb1d323"
 					(reference "R4")
 					(unit 1)
@@ -1458,7 +1458,7 @@
 			(uuid "f172795d-43d7-4c82-9b07-9616a7bdc671")
 		)
 		(instances
-			(project ""
+			(project "ECE Capstone Schematic"
 				(path "/f5466e30-9697-4c42-96e2-a6468d9cb39f/f1895d82-ed62-4765-9482-f80f4fb1d323"
 					(reference "#PWR02")
 					(unit 1)
@@ -1524,7 +1524,7 @@
 			(uuid "7ccd0bb7-f15a-42ad-b744-e0c95eb7ff46")
 		)
 		(instances
-			(project ""
+			(project "ECE Capstone Schematic"
 				(path "/f5466e30-9697-4c42-96e2-a6468d9cb39f/f1895d82-ed62-4765-9482-f80f4fb1d323"
 					(reference "#PWR04")
 					(unit 1)
@@ -1592,7 +1592,7 @@
 			(uuid "a8c55589-ff68-4dff-b49c-9d173559dd68")
 		)
 		(instances
-			(project ""
+			(project "ECE Capstone Schematic"
 				(path "/f5466e30-9697-4c42-96e2-a6468d9cb39f/f1895d82-ed62-4765-9482-f80f4fb1d323"
 					(reference "C1")
 					(unit 1)
@@ -1658,7 +1658,7 @@
 			(uuid "931588d0-90ef-446d-818d-51010e9c794b")
 		)
 		(instances
-			(project "ECE Capstone"
+			(project "ECE Capstone Schematic"
 				(path "/f5466e30-9697-4c42-96e2-a6468d9cb39f/f1895d82-ed62-4765-9482-f80f4fb1d323"
 					(reference "#PWR05")
 					(unit 1)
@@ -1724,7 +1724,7 @@
 			(uuid "448d716e-207f-4786-9e16-59a910fcf87d")
 		)
 		(instances
-			(project ""
+			(project "ECE Capstone Schematic"
 				(path "/f5466e30-9697-4c42-96e2-a6468d9cb39f/f1895d82-ed62-4765-9482-f80f4fb1d323"
 					(reference "#PWR01")
 					(unit 1)
@@ -1791,7 +1791,7 @@
 			(uuid "bab18c7c-95f2-4839-8ede-d2310b306662")
 		)
 		(instances
-			(project "ECE Capstone"
+			(project "ECE Capstone Schematic"
 				(path "/f5466e30-9697-4c42-96e2-a6468d9cb39f/f1895d82-ed62-4765-9482-f80f4fb1d323"
 					(reference "#PWR03")
 					(unit 1)
