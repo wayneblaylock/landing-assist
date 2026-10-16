@@ -1,0 +1,5 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "VLS252012ET-2R2M")(type "KiCad")(uri "C:/Users/Christian/OneDrive/Documents/KiCad/9.0/symbols/VLS252012ET-2R2M.kicad_sym")(options "")(descr ""))
+  (lib (name "capstone_custom")(type "KiCad")(uri "${KIPRJMOD}/capstone_custom.kicad_sym")(options "")(descr ""))
+)

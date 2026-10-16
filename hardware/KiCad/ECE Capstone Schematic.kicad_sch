@@ -1,0 +1,182 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "f5466e30-9697-4c42-96e2-a6468d9cb39f")
+	(paper "A4")
+	(lib_symbols)
+	(sheet
+		(at 97.79 73.66)
+		(size 45.72 10.16)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "1f5d8188-c35a-4ca5-ae18-23cb0fcd83fe")
+		(property "Sheetname" "LiDAR"
+			(at 97.79 72.9484 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "lidar.kicad_sc.kicad_sch"
+			(at 97.79 84.4046 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "ECE Capstone Schematic"
+				(path "/f5466e30-9697-4c42-96e2-a6468d9cb39f"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 96.52 95.25)
+		(size 45.72 12.7)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "5efe4031-5539-44e6-8b44-0d1eeefb4a3a")
+		(property "Sheetname" "POWER"
+			(at 96.52 94.5384 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "power.kicad_sch"
+			(at 96.52 108.5346 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "ECE Capstone Schematic"
+				(path "/f5466e30-9697-4c42-96e2-a6468d9cb39f"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 99.06 16.51)
+		(size 46.99 16.51)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "688bd2e8-b9ed-4634-aa14-cae97f5fec53")
+		(property "Sheetname" "MCU+IMU"
+			(at 99.06 15.7984 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "mcu_imu.kicad_sch"
+			(at 99.06 33.6046 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "ECE Capstone Schematic"
+				(path "/f5466e30-9697-4c42-96e2-a6468d9cb39f"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 97.79 48.26)
+		(size 46.99 13.97)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "f1895d82-ed62-4765-9482-f80f4fb1d323")
+		(property "Sheetname" "Airspeed"
+			(at 97.79 47.5484 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "airspeed.kicad_sch .kicad_sch"
+			(at 97.79 62.8146 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "ECE Capstone Schematic"
+				(path "/f5466e30-9697-4c42-96e2-a6468d9cb39f"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
