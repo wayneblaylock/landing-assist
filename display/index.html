@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Landing Assist ADI</title>
+<style>
+:root {
+  --color-sky: #9ed6f5;
+  --color-ground: #6e5344;
+  --color-line: #ffffff;
+  --color-cue: #f5c400;
+  --color-aircraft: #e020b8;
+  --color-tape: #e4e4e4;
+  --color-ink: #161616;
+  --color-low: #2f7fe0;
+  --color-active-bg: #c6e8b4;
+  --color-active-border: #3f7a34;
+  --color-active-fg: #173016;
+  --color-standby-bg: #e8e8e8;
+  --color-standby-border: #8a8a8a;
+  --color-standby-fg: #1c1c1c;
+}
+html, body { margin: 0; height: 100%; overflow: hidden; background: var(--color-sky); }
+.instrument {
+  position: fixed; inset: 0; overflow: hidden;
+  background: var(--color-sky); color: var(--color-ink);
+  font-family: system-ui, sans-serif; user-select: none;
+}
+.instrument[data-trust="no"] { background: #5c5c5c; }
+.instrument[data-trust="no"] .adi,
+.instrument[data-trust="no"] .tape { visibility: hidden; }
+.adi { position: absolute; top: 0; left: 0; display: block; }
+.sky { fill: var(--color-sky); }
+.ground { fill: var(--color-ground); }
+.ladder { stroke: var(--color-line); fill: none; }
+.cue-stroke { fill: none; stroke: var(--color-cue); stroke-linecap: butt; }
+.cue-dot { fill: var(--color-cue); }
+.aircraft { fill: var(--color-aircraft); }
+.tape {
+  position: absolute; top: 0; right: 0; bottom: 0; z-index: 2;
+  background: var(--color-tape); border-left: 1px solid var(--color-ink);
+}
+.tape-label, .callout-num { font-family: ui-monospace, monospace; font-weight: 700; }
+.tape-label { position: absolute; right: 0.4rem; transform: translateY(-50%); }
+.tape-tick {
+  position: absolute; right: 0; width: 0.7rem; height: 2px;
+  background: var(--color-ink); transform: translateY(-50%);
+}
+.callout {
+  position: absolute; right: 100%; display: flex; align-items: center;
+  transform: translateY(-50%); margin-right: 0.15rem; z-index: 3;
+}
+.callout-num {
+  background: #fff; border: 2px solid var(--color-ink);
+  padding: 0.25rem 0.4rem; min-width: 2.2rem; text-align: center;
+}
+.trust-banner {
+  position: absolute; z-index: 5; top: 50%; left: 50%;
+  transform: translate(-50%, -50%); color: #f3f3f3;
+  font-size: clamp(1.4rem, 5.5vmin, 2.6rem); font-weight: 700; text-align: center;
+}
+.bottom-cluster {
+  position: fixed; z-index: 4; left: 0.75rem; bottom: 0.75rem;
+  display: flex; align-items: center; gap: 0.7rem;
+}
+.status {
+  padding: 0.4rem 0.9rem; border: 2px solid var(--color-active-border);
+  border-radius: 3px; background: var(--color-active-bg);
+  color: var(--color-active-fg); font-weight: 600;
+}
+.status[data-mode="standby"] {
+  border-color: var(--color-standby-border); background: var(--color-standby-bg);
+  color: var(--color-standby-fg);
+}
+.dev-btn {
+  min-width: 2.75rem; min-height: 2.75rem; padding: 0 0.7rem;
+  border: 1px solid rgb(255 255 255 / 0.55); border-radius: 3px;
+  background: rgb(16 16 16 / 0.62); color: #fff; font-weight: 700;
+}
+.dev-panel {
+  position: absolute; z-index: 6; left: 0.75rem; top: 50%; transform: translateY(-50%);
+  width: min(19rem, calc(100% - 6rem)); max-height: 80%; overflow: auto;
+  padding: 0.85rem; border-radius: 6px;
+  background: rgb(28 24 20 / 0.88); color: #f6f3ec;
+}
+.field { display: block; margin: 0.4rem 0; }
+.field-label { display: flex; justify-content: space-between; font-size: 0.86rem; }
+.field input[type="range"] { width: 100%; }
+</style>
+</head>
+<body>
+<div class="instrument" id="instrument" data-trust="yes">
+  <svg class="adi" id="adi"></svg>
+  <div class="tape" id="tape"></div>
+  <div class="bottom-cluster">
+    <div class="status" id="status" data-mode="active">Active</div>
+    <button class="dev-btn" id="devBtn">Dev</button>
+  </div>
+  <div class="trust-banner" id="trustBanner" style="display:none">Don't Trust Sensors</div>
+  <aside class="dev-panel" id="devPanel" style="display:none">
+    <h2 style="margin:0 0 0.5rem">Dev</h2>
+    <label class="field">
+      <span class="field-label"><span>Model T usable</span></span>
+      <input type="checkbox" id="modelT" checked>
+    </label>
+    <label class="field">
+      <span class="field-label"><span>Roll</span><span id="phiVal">-16.0°</span></span>
+      <input type="range" id="phi" min="-60" max="60" step="0.1" value="-16">
+    </label>
+    <label class="field">
+      <span class="field-label"><span>Actual pitch</span><span id="thetaVal">-6.0°</span></span>
+      <input type="range" id="theta" min="-10" max="20" step="0.1" value="-6">
+    </label>
+    <label class="field">
+      <span class="field-label"><span>Suggested pitch</span><span id="cueVal">1.0°</span></span>
+      <input type="range" id="cue" min="-10" max="20" step="0.1" value="1">
+    </label>
+    <label class="field">
+      <span class="field-label"><span>Height</span><span id="hVal">24.0 ft</span></span>
+      <input type="range" id="h" min="0" max="80" step="0.1" value="24">
+    </label>
+  </aside>
+</div>
+<script>
+const state = { phi: -16, theta: -6, cue: 1, h: 24, modelT: true };
+const LADDER = [-40,-30,-20,-10,10,20,30,40];
+const TAPE = [50,32,16,8,4,2,1,0];
+const ARM = 78, HOOK = 26, INNER = 52, DOT_R = 4.2, YELLOW = 6, MAG_W = 86, MAG_H = 8;
+const CUE_SPAN = (INNER + ARM) * 2;
+const LEFT = `M ${-(INNER+ARM)} 0 L ${-INNER} 0 L ${-INNER} ${HOOK}`;
+const RIGHT = `M ${INNER} ${HOOK} L ${INNER} 0 L ${INNER+ARM} 0`;
+
+function clamp(n,a,b){return Math.min(b,Math.max(a,n));}
+function tapeT(ft){const c=clamp(ft,0,50);return Math.log(c+1)/Math.log(51);}
+
+function render() {
+  const inst = document.getElementById('instrument');
+  const adi = document.getElementById('adi');
+  const tape = document.getElementById('tape');
+  const w = inst.clientWidth, h = inst.clientHeight;
+  const tapeW = clamp(w * 0.072 + 24, 48, 112);
+  const visibleW = Math.max(0, w - tapeW);
+  const cx = visibleW / 2, cy = h / 2;
+  const pxPerDeg = Math.min(visibleW, h) / 34 || 1;
+  const cueScale = Math.min((visibleW * 0.48) / CUE_SPAN, (h * 0.18) / HOOK, 2.6);
+  const lineW = Math.max(1.75, Math.min(w,h) * 0.003);
+  const span = Math.max(w,h) * 3;
+  const padTop = Math.max(22, h * 0.04);
+  const padBottom = Math.max(22, h * 0.045);
+  const innerH = Math.max(1, h - padTop - padBottom);
+  const yForFt = ft => padTop + (1 - tapeT(ft)) * innerH;
+  const world = `rotate(${-state.phi} ${cx} ${cy}) translate(0 ${state.theta * pxPerDeg})`;
+  const suggestionY = cy + (state.theta - state.cue) * pxPerDeg;
+
+  adi.setAttribute('width', w);
+  adi.setAttribute('height', h);
+  adi.innerHTML = `
+    <defs><clipPath id="clip"><rect width="${w}" height="${h}"/></clipPath></defs>
+    <g clip-path="url(#clip)">
+      <g transform="${world}">
+        <rect class="sky" x="${cx-span}" y="${cy-span}" width="${span*2}" height="${span+1}"/>
+        <rect class="ground" x="${cx-span}" y="${cy}" width="${span*2}" height="${span}"/>
+        ${LADDER.map(d => {
+          const y = cy - d * pxPerDeg;
+          return `<line class="ladder" x1="${cx-span}" y1="${y}" x2="${cx+span}" y2="${y}" stroke-width="${lineW}"/>`;
+        }).join('')}
+      </g>
+      <g transform="translate(${cx} ${suggestionY}) scale(${cueScale})">
+        <rect class="aircraft" x="${-MAG_W/2}" y="${-MAG_H/2}" width="${MAG_W}" height="${MAG_H}"/>
+      </g>
+      <g transform="translate(${cx} ${cy}) scale(${cueScale})">
+        <path class="cue-stroke" d="${LEFT}" stroke-width="${YELLOW}"/>
+        <path class="cue-stroke" d="${RIGHT}" stroke-width="${YELLOW}"/>
+        <circle class="cue-dot" r="${DOT_R}"/>
+      </g>
+    </g>`;
+
+  tape.style.width = tapeW + 'px';
+  tape.innerHTML = TAPE.map(ft => `
+    <span class="tape-tick" style="top:${yForFt(ft)}px"></span>
+    <span class="tape-label" style="top:${yForFt(ft)}px;font-size:${clamp(tapeW*0.23,11,18)}px">${ft}</span>
+  `).join('') + `
+    <div class="callout" style="top:${yForFt(state.h)}px">
+      <span class="callout-num">${state.h.toFixed(1)}</span>
+    </div>`;
+
+  inst.dataset.trust = state.modelT ? 'yes' : 'no';
+  document.getElementById('status').dataset.mode = state.modelT ? 'active' : 'standby';
+  document.getElementById('status').textContent = state.modelT ? 'Active' : 'Standby';
+  document.getElementById('trustBanner').style.display = state.modelT ? 'none' : 'block';
+}
+
+function bind() {
+  const ids = ['phi','theta','cue','h'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', () => {
+      state[id === 'h' ? 'h' : id] = Number(el.value);
+      document.getElementById(id + 'Val').textContent =
+        id === 'h' ? state.h.toFixed(1) + ' ft' : Number(el.value).toFixed(1) + '°';
+      render();
+    });
+  });
+  document.getElementById('modelT').addEventListener('change', e => {
+    state.modelT = e.target.checked;
+    render();
+  });
+  document.getElementById('devBtn').addEventListener('click', () => {
+    const p = document.getElementById('devPanel');
+    p.style.display = p.style.display === 'none' ? 'block' : 'none';
+  });
+  window.addEventListener('resize', render);
+}
+
+bind();
+render();
+</script>
+</body>
+</html>
