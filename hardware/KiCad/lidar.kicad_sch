@@ -1135,7 +1135,7 @@
 	)
 	(global_label "LIDAR_RX"
 		(shape output)
-		(at 115.57 76.2 180)
+		(at 115.57 78.74 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1145,7 +1145,7 @@
 		)
 		(uuid "8764bd6a-a371-40ac-9541-abe272e5a203")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 108.5534 76.2 0)
+			(at 108.5534 78.74 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1157,7 +1157,7 @@
 	)
 	(global_label "LIDAR_TX"
 		(shape input)
-		(at 115.57 78.74 180)
+		(at 115.57 76.2 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1167,7 +1167,7 @@
 		)
 		(uuid "f65a8402-9c26-4d65-b45f-9804b00cfe9a")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 108.7348 78.74 0)
+			(at 108.7348 76.2 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2145,7 +2145,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0201_0603Metric_Pad0.64x0.40mm_HandSolder"
 			(at 101.2952 100.33 0)
 			(effects
 				(font
