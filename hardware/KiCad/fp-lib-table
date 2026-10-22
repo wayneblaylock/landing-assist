@@ -2,4 +2,5 @@
   (version 7)
   (lib (name "4525DO-DS5AI001DP")(type "KiCad")(uri "C:/Users/Christian/OneDrive/Documents/4525DO-DS5AI001DP.pretty")(options "")(descr ""))
   (lib (name "TDK_VLS252012")(type "KiCad")(uri "C:/Users/Christian/OneDrive/Documents/TDK_VLS252012.pretty")(options "")(descr ""))
+  (lib (name "Capstone_Footprints")(type "KiCad")(uri "${KIPRJMOD}/Capstone_Footprints.pretty")(options "")(descr ""))
 )
