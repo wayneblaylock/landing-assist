@@ -1155,6 +1155,29 @@ CONFIG_ESP_EVENT_POST_FROM_IRAM_ISR=y
 # end of Event Loop Library
 
 #
+# HTTP Server
+#
+# default:
+CONFIG_HTTPD_MAX_REQ_HDR_LEN=1024
+# default:
+CONFIG_HTTPD_MAX_URI_LEN=512
+# default:
+CONFIG_HTTPD_ERR_RESP_NO_DELAY=y
+# default:
+CONFIG_HTTPD_PURGE_BUF_LEN=32
+# default:
+# CONFIG_HTTPD_LOG_PURGE_DATA is not set
+# default:
+# CONFIG_HTTPD_WS_SUPPORT is not set
+# default:
+# CONFIG_HTTPD_QUEUE_WORK_BLOCKING is not set
+# default:
+CONFIG_HTTPD_ENABLE_EVENTS=y
+# default:
+CONFIG_HTTPD_SERVER_EVENT_POST_TIMEOUT=2000
+# end of HTTP Server
+
+#
 # Hardware Settings
 #
 # default:
