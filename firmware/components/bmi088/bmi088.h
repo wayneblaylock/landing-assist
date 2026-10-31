@@ -46,6 +46,22 @@ typedef enum {
     GYRO_RANGE_125DPS  = 0x04,
 } gyro_range_t;
 
+typedef enum {
+    GYRO_BW_532 = 0x00,
+    GYRO_BW_230 = 0x01,
+    GYRO_BW_116 = 0x02,
+    GYRO_BW_47  = 0x03,
+    GYRO_BW_23  = 0x04,
+    GYRO_BW_12  = 0x05,
+    GYRO_BW_64  = 0x06,
+    GYRO_BW_32  = 0x07,
+} gyro_bw_t;
+
+typedef enum {
+    GYRO_FIFO_MODE_STREAM = 0x80,
+    GYRO_FIFO_MODE_FIFO   = 0x40,
+} gyro_fifo_mode_t;
+
 typedef struct {
     int spi_clock_speed_hz;
     
@@ -57,12 +73,13 @@ typedef struct {
     uint8_t acc_fifo_downs;//3 bit fifo downsample
     uint16_t acc_fifo_wtm;//13 bit watermark level for interrupts
 
-
-    gyro_range_t gyro_range;
+    gyro_range_t gyro_range;//max and min values in degrees per second
+    gyro_bw_t gyro_bw;//bandwidth or output data rate setings. See datasheet.
+    gyro_fifo_mode_t gyro_fifo_mode;
 } bmi088_config_t;
 
 #define BMI088_DEFAULT_CONFIG() { \
-    .spi_clock_speed_hz = 1 * 1000 * 1000, \
+    .spi_clock_speed_hz = 5 * 1000 * 1000, \
     .acc_bwp = ACC_BWP_NORM, \
     .acc_odr = ACC_ODR_100_HZ,\
     .acc_range = ACC_RANGE_6G,\
@@ -71,9 +88,13 @@ typedef struct {
     .acc_fifo_downs = 0x00,\
     .acc_fifo_wtm = 0x0200,\
     .gyro_range = GYRO_RANGE_2000DPS,\
+    .gyro_bw = GYRO_BW_532,\
+    .gyro_fifo_mode = GYRO_FIFO_MODE_STREAM,\
 }
 
-void bmi088_init(bmi088_config_t* config);
+void bmi088_sleep();//enables sleep low power. To enable, run init with your previous configuration settings.
+void bmi088_init(bmi088_config_t* config);//enable the bmi088.
 
-void acc_read(float* data);
-//void gyro_read(float* data);
+uint16_t acc_read_fifo(float* data, uint16_t max_data);
+uint16_t gyro_read_fifo(float* data, uint16_t max_data);
+
