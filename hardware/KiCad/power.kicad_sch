@@ -7753,7 +7753,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capstone_Footprints:10176546-00011LF_KiCad9"
 			(at 66.04 52.07 0)
 			(effects
 				(font

@@ -2625,12 +2625,12 @@
 		(uuid "85120832-8f13-4167-b4da-7dc64106d259")
 	)
 	(no_connect
-		(at 121.92 83.82)
-		(uuid "857c0d42-c901-4815-bfae-68207f703867")
-	)
-	(no_connect
 		(at 121.92 91.44)
 		(uuid "8d55653a-c092-45e7-99f1-135eb4830053")
+	)
+	(no_connect
+		(at 121.92 78.74)
+		(uuid "95b9eeb4-a056-430c-8fd8-95bc9477ebfc")
 	)
 	(no_connect
 		(at 121.92 101.6)
@@ -3556,7 +3556,7 @@
 	)
 	(global_label "LIDAR_RX"
 		(shape input)
-		(at 121.92 78.74 0)
+		(at 121.92 83.82 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -3566,7 +3566,7 @@
 		)
 		(uuid "d3a6b1cb-7a67-4982-8c53-0120281ff042")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 133.6138 78.74 0)
+			(at 133.6138 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
