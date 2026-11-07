@@ -5,41 +5,9 @@
 
 #include "softap.h"
 #include "webserver.h"
-#include "bmi088.h"
+#include "attitude.h"
 
 static const char *TAG = "main";
-
-void vTestBMI_FIFO(void* pvParameters) {
-
-    bmi088_config_t bmi088_cfg = BMI088_DEFAULT_CONFIG();
-
-    bmi088_cfg.spi_clock_speed_hz = 8 * 1000 * 1000;
-    bmi088_cfg.acc_fifo_en = 0x01;
-    bmi088_cfg.acc_odr = ACC_ODR_200_HZ;
-    bmi088_cfg.gyro_bw = GYRO_BW_64;//200HZ ODR
-
-    bmi088_init(&bmi088_cfg);
-    float accel[450];
-    float gyro[450];
-    int i = 0;
-
-    while (1) {
-        int accel_values_read = acc_read_fifo(accel, 450);
-        int gyro_values_read = gyro_read_fifo(gyro, 450);
-        //only print every 30 values
-        if ((i % 60) == 0) {
-            //ESP_LOGI(TAG, "BMI088Accel read in %d values from FIFO", values_read);
-            //ESP_LOGI(TAG, "BMI088Accel %.6f %.6f %.6f", accel[0],accel[1],accel[2]);
-        }
-        //ESP_LOGI(TAG, "BMI088Accel data rate register is 0x%X values from FIFO. Expect 0x%X", acc_read_reg(0x40), (bmi088_cfg.acc_bwp << 4) | (bmi088_cfg.acc_odr & 0x0F));
-        ESP_LOGI(TAG, "BMI088Gyroroscope   read in %d values from FIFO. First 3: %.6f %.6f %.6f", accel_values_read, accel[accel_values_read-3],accel[accel_values_read-2],accel[accel_values_read-1]);
-        ESP_LOGI(TAG, "BMI088Accelerometer read in %d values from FIFO. First 3: %.6f %.6f %.6f", gyro_values_read, gyro[gyro_values_read-3],gyro[gyro_values_read-2],gyro[gyro_values_read-1]);
-
-
-        vTaskDelay(pdMS_TO_TICKS(1600));//60Hz???
-        i++;
-    }
-}
 
 void app_main(void)
 {
@@ -54,14 +22,27 @@ void app_main(void)
     // Start the SoftAP
     softap_start();
 
+    //start the ARS (attitude reference system)
+    attitude_start();
+
     // Start the HTTP server that serves the ADI
     webserver_start();
 
-    xTaskCreate(vTestBMI_FIFO, "IMU", 6096, NULL, 1, NULL);
+    
 
     uint32_t tick = 0;
     while (1) {
         ESP_LOGI(TAG, "tick %lu", (unsigned long)tick++);
+
+        attitude_t att;
+        if (attitude_get(&att, pdMS_TO_TICKS(20))) {
+            ESP_LOGI(TAG, "PITCH/ROLL:  %.3f %.3f", att.pitch, att.roll);
+        } else {
+            ESP_LOGW(TAG, "no attitude data");
+        }
+
+        if (tick == 10) {attitude_request_calibration(pdMS_TO_TICKS(5000));}
+
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }

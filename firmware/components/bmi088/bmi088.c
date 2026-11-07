@@ -373,7 +373,7 @@ esp_err_t gyro_set_range(gyro_range_t range) {
         gyro_scale = 125.0f;
         break;
     }
-    gyro_scale /= 32767.0F;
+    gyro_scale /= 32767.0f;
     //set range
     return gyro_write_reg_v(REG_GYRO_RANGE, range);
 }
