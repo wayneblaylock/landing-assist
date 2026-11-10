@@ -19,6 +19,21 @@ static i2c_master_dev_handle_t dev = NULL;
 #define P_MIN    -1.0f
 #define PSI_TO_PA 6894.757f
 
+static void scan_bus(void)
+{
+    ESP_LOGI(TAG, "Scanning I2C bus...");
+    int found = 0;
+    for (uint8_t addr = 1; addr < 127; addr++) {
+        if (i2c_master_probe(bus, addr, pdMS_TO_TICKS(20)) == ESP_OK) {
+            ESP_LOGI(TAG, "  device found at 0x%02X", addr);
+            found++;
+        }
+    }
+    if (found == 0) {
+        ESP_LOGW(TAG, "  no devices found — check wiring, power, and pull-ups");
+    }
+}
+
 void airspeed_init(void)
 {
     i2c_master_bus_config_t bus_cfg = {
@@ -30,6 +45,8 @@ void airspeed_init(void)
         .flags.enable_internal_pullup = true,
     };
     ESP_ERROR_CHECK(i2c_new_master_bus(&bus_cfg, &bus));
+
+    scan_bus();
 
     i2c_device_config_t dev_cfg = {
         .dev_addr_length = I2C_ADDR_BIT_LEN_7,
@@ -46,27 +63,35 @@ bool airspeed_read_diff_pa(float *pressure_pa, float *temp_c)
 {
     if (!dev) return false;
 
+    // Measurement request (Read_MR) — write 0x00, then wait for conversion
+    uint8_t mr = 0x00;
+    esp_err_t err = i2c_master_transmit(dev, &mr, 1, pdMS_TO_TICKS(50));
+    if (err != ESP_OK) {
+        ESP_LOGW(TAG, "MR write failed: %s", esp_err_to_name(err));
+        // fall through and try a pure read anyway
+    } else {
+        vTaskDelay(pdMS_TO_TICKS(3));  // datasheet conversion time
+    }
+
     uint8_t buf[4] = {0};
-    esp_err_t err = i2c_master_receive(dev, buf, sizeof(buf), pdMS_TO_TICKS(50));
+    err = i2c_master_receive(dev, buf, sizeof(buf), pdMS_TO_TICKS(50));
     if (err != ESP_OK) {
         ESP_LOGW(TAG, "I2C read failed: %s", esp_err_to_name(err));
         return false;
     }
 
     uint8_t status = (buf[0] >> 6) & 0x03;
-    if (status == 2 || status == 3) {
-        ESP_LOGW(TAG, "sensor status fault (%u)", status);
+    if (status == 3) {  // fault
+        ESP_LOGW(TAG, "sensor status fault");
         return false;
     }
+    // status 0 = normal, status 2 = stale (still usable)
 
     uint16_t p_cnts = ((buf[0] & 0x3F) << 8) | buf[1];
     uint16_t t_cnts = (buf[2] << 3) | (buf[3] >> 5);
 
-    // Type A, ±1 PSI
     float psi = (p_cnts - C_A * P_CNT) * ((P_MAX - P_MIN) / (D_A * P_CNT)) + P_MIN;
     float pa = psi * PSI_TO_PA;
-
-    // Temperature: 11-bit, roughly -50 to 150 °C
     float temp = (t_cnts / 2047.0f) * 200.0f - 50.0f;
 
     if (pressure_pa) *pressure_pa = pa;
